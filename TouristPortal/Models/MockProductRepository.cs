@@ -23,9 +23,24 @@ namespace TouristPortal.Models
 
         public IEnumerable<Product> ProductsOfMonth { get; }
 
+        public void CreateProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
         public Product GetProductById(int productId)
         {
             return AllProducts.FirstOrDefault(p => p.ProductId == productId);
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            throw new NotImplementedException();
         }
     }
 }

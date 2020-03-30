@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TouristPortal.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -15,7 +17,9 @@ namespace TouristPortal.Models
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,7 +43,7 @@ namespace TouristPortal.Models
                 CategoryId = 1,
                 ImageUrl = "http://robertofranco.pl/Diploma/Marsala.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/MarsalaLogo.jpg",
                 MapX = "37.796355",
                 MapY = "12.430414"
@@ -57,7 +61,7 @@ namespace TouristPortal.Models
                 CategoryId = 2,
                 ImageUrl = "http://robertofranco.pl/Diploma/Peniche.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/PenicheLogo.jpg",
                 MapX = "39.361309",
                 MapY = "-9.396556"
@@ -75,7 +79,7 @@ namespace TouristPortal.Models
                 CategoryId = 3,
                 ImageUrl = "http://robertofranco.pl/Diploma/Everest.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/EverestLogo.jpg",
                 MapX = "27.988076",
                 MapY = "86.924930"
@@ -111,7 +115,7 @@ namespace TouristPortal.Models
                 CategoryId = 4,
                 ImageUrl = "http://robertofranco.pl/Diploma/Florencja.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/FlorencjaLogo.jpg",
                 MapX = "43.769546",
                 MapY = "11.246303"
@@ -129,7 +133,7 @@ namespace TouristPortal.Models
                 CategoryId = 4,
                 ImageUrl = "http://robertofranco.pl/Diploma/Londyn.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/LondynLogo.jpg",
                 MapX = "51.508446",
                 MapY = "-0.116720"
@@ -147,7 +151,7 @@ namespace TouristPortal.Models
                 CategoryId = 1,
                 ImageUrl = "http://robertofranco.pl/Diploma/Hurghada.jpg",
                 InStock = true,
-                IsProductOfMonth = false,
+                IsProductOfMonth = true,
                 LogoUrl = "http://robertofranco.pl/Diploma/HurghadaLogo.jpg",
                 MapX = "27.263904",
                 MapY = "33.812615"

@@ -1,0 +1,84 @@
+﻿
+@model ProductsListViewModel
+<link href="~/Content/mapa.css" rel="stylesheet" />
+<style>
+</style>
+<script>
+    var map;
+    var InforObj = [];
+    var centerCords = {
+        lat: 52.230891,
+        lng: 20.995694
+    };
+    var markersOnMap = [];
+        @foreach (var product in Model.Products)
+        {
+            @if (product.InStock)
+            {
+                <text>
+                    markersOnMap.push({
+                        placeId: "@product.ProductId",
+                        placeName: "@product.Name",
+                        placeDescription: "@product.ShortDescription",
+                        logoURL: "@product.LogoUrl",
+                        LatLng: [{
+                            lat: parseFloat('@product.MapX'),
+                            lng: parseFloat('@product.MapY')
+                        }]
+                    });
+                </text>
+            }
+        }
+
+    window.onload = function () {
+        initMap();
+    };
+
+    function addMarkerInfo() {
+            for (var i = 0; i < markersOnMap.length; i++) {
+                var contentString = '<div id="iw-container">' +
+                    '<div class="iw-title"><a href="/Product/Details/' + markersOnMap[i].placeId + '">' + markersOnMap[i].placeName + '</a></div>' +
+                    '<div class="iw-content">' +
+                    '<img src="' + markersOnMap[i].logoURL + '" height="80" width="120">' +
+                    '<p>' + markersOnMap[i].placeDescription + '</p>' +
+                    '</div>' +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+
+                const marker = new google.maps.Marker({
+                    position: markersOnMap[i].LatLng[0],
+                    map: map
+                });
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: contentString,
+                    maxWidth: 500
+                });
+
+                marker.addListener('click', function () {
+                    closeOtherInfo();
+                    infowindow.open(marker.get('map'), marker);
+                    InforObj[0] = infowindow;
+                });
+            }
+        }
+    function closeOtherInfo() {
+        if (InforObj.length > 0) {
+            InforObj[0].set("marker", null);
+            InforObj[0].close();
+            InforObj.length = 0;
+        }
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 2,
+            center: centerCords
+        });
+        addMarkerInfo();
+    }
+</script>
+
+<div id="map"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?language=pl&key=AIzaSyCLhVO9FePKNviZqkNUIAr0U1KOzjvXAaM"></script>

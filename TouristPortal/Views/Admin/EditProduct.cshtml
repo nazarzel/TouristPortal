@@ -1,0 +1,111 @@
+﻿@model ProductEditViewModel
+    <div class="thumbnail">
+        <h2>Edycja produktu</h2>
+
+        <form asp-controller="Admin" asp-action="EditProduct" method="post" class="form-horizontal" role="form">
+            <h4>Zmień pola poniżej</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Id</label>
+                <div class="col-md-10">
+                    <input asp-for="product.ProductId" class="form-control" readonly />
+                    <span asp-validation-for="product.ProductId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Nazwa</label>
+                <div class="col-md-10">
+                    <input asp-for="product.Name" class="form-control" />
+                    <span asp-validation-for="product.Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Krótki opis</label>
+                <div class="col-md-10">
+                    <input asp-for="product.ShortDescription" class="form-control" />
+                    <span asp-validation-for="product.ShortDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Opis</label>
+                <div class="col-md-10">
+                    <input asp-for="product.LongDescription" class="form-control" />
+                    <span asp-validation-for="product.LongDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Cena</label>
+                <div class="col-md-10">
+                    <input asp-for="product.Price" class="form-control" />
+                    <span asp-validation-for="product.Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">URL zdjęcia</label>
+                <div class="col-md-10">
+                    <input asp-for="product.ImageUrl" class="form-control" />
+                    <span asp-validation-for="product.ImageUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">URL Logo</label>
+                <div class="col-md-10">
+                    <input asp-for="product.LogoUrl" class="form-control" />
+                    <span asp-validation-for="product.LogoUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Map X</label>
+                <div class="col-md-10">
+                    <input asp-for="product.MapX" class="form-control" />
+                    <span asp-validation-for="product.MapX" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Map Y</label>
+                <div class="col-md-10">
+                    <input asp-for="product.MapY" class="form-control" />
+                    <span asp-validation-for="product.MapY" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Na stanie</label>
+                <div class="col-md-10">
+                    <input asp-for="product.InStock" class="form-control" />
+                    <span asp-validation-for="product.InStock" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Oferta miesiąca</label>
+                <div class="col-md-10">
+                    <input asp-for="product.IsProductOfMonth" class="form-control" />
+                    <span asp-validation-for="product.IsProductOfMonth" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Kategoria</label>
+                <div class="col-md-10">
+                    <select asp-for="product.CategoryId" class="form-control"
+                            asp-items="Model.Categories"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-primary" value="Zmień" />
+                </div>
+            </div>
+        </form>
+    </div>

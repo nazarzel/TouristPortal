@@ -1,0 +1,190 @@
+﻿@model AdminViewModel
+<link href="~/Content/switch.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/adminTable.js"></script>
+<div class="thumbnail">
+    <h2 class="card-title">Zarządzanie</h2>
+    <div class="onoffswitch">
+        <input onclick="show()" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+        <label class="onoffswitch-label" for="myonoffswitch">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+        </label>
+    </div>
+    <div id="ordersTable">
+        <table id="tborders" class="table table-condensed table-bordered table-striped bg-warning" onload="myFunction()">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Imie i nazwisko</th>
+                    <th>Lokalizacja</th>
+                    <th>Adres</th>
+                    <th>Data złożenia</th>
+                    <th>Suma</th>
+                    <th>Produkt</th>
+                    <th>Ilość</th>
+                    <th>Num. tel.</th>
+                    <th>Działania</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.FirstName @order.LastName</td>
+                        <td>@order.City @order.Country</td>
+                        <td>@order.ZipCode @order.AddressLine1 @order.AddressLine2 </td>
+                        <td>@order.OrderPlaced.ToShortDateString()</td>
+                        <td>@order.OrderTotal zł</td>
+                        <td>
+                            @foreach (var item in Model.OrderDetails.Where(item => item.OrderId == order.OrderId))
+                            {
+                                <div class="divToReplace">@item.ProductId</div>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var item in Model.OrderDetails.Where(item => item.OrderId == order.OrderId))
+                            {
+                                <div>@item.Amount x @item.Price zł</div>
+                            }
+                        </td>
+                        <td>@order.PhoneNumber</td>
+                        <td>
+                            <form asp-action="DeleteOrder" asp-route-OrderId="@order.OrderId" method="post">
+                                <button type="submit" onclick="return confirm('Naprawdę chcesz usunąć?');" class="btn btn-sm btn-danger">
+                                    Usuń
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Imie i nazwisko</th>
+                    <th>Kraj</th>
+                    <th>Adres</th>
+                    <th>Data złożenia</th>
+                    <th>Suma</th>
+                    <th>Produkt</th>
+                    <th>Ilość</th>
+                    <th>Num. tel.</th>
+                    <th>Działania</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <link href="~/Content/datatables.css" rel="stylesheet" />
+    <div id="productsTable">
+        <table class="table table-condensed table-bordered table-striped bg-warning" id="tbproducts">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Nazwa</th>
+                    <th>W sprzedaży</th>
+                    <th>Cena</th>
+                    <th>Działania</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <td>@product.ProductId</td>
+                        <td><a asp-controller="Product" asp-action="Details" asp-route-id="@product.ProductId">@product.Name</a></td>
+                        <td><input type="checkbox" asp-for="@product.InStock" readonly></td>
+                        <td>@product.Price zł</td>
+                        <td>
+                            <form asp-action="DeleteProduct" asp-route-ProductId="@product.ProductId" method="post">
+                                <a class="btn btn-sm btn-primary" asp-action="EditProduct" asp-route-ProductId="@product.ProductId">Edycja</a>
+                                <button type="submit" onclick="return confirm('Naprawdę chcesz usunąć?');" class="btn btn-sm btn-danger">
+                                    Usuń
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Nazwa</th>
+                    <th>W sprzedaży</th>
+                    <th>Cena</th>
+                    <th>Działania</th>
+                </tr>
+            </tfoot>
+        </table>
+        <p>
+            <a class="btn btn-primary" asp-action="AddProduct">Dodaj nowy produkt</a>
+        </p>
+    </div>
+    <div class="modal fade text-xs-left" tabindex="-1" role="dialog"
+         style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align: center;">
+                    <table class="table table-condensed table-bordered table-striped bg-warning" id="allProducts">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Nazwa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products.Select((value, i) => new { i, value }))
+                            {
+                                <tr>
+                                    <td id="id_@product.i" class="idtr">@product.value.ProductId</td>
+                                    <td id="name_@product.i" class="nametr"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.value.ProductId">@product.value.Name</a></td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+
+    $(document).ready(function () {
+
+        var myTableArray = [];
+
+        $("table#allProducts tr").each(function () {
+            var arrayOfThisRow = [];
+            var tableData = $(this).find('td');
+            if (tableData.length > 0) {
+                tableData.each(function () { arrayOfThisRow.push($(this).text()); });
+                myTableArray.push(arrayOfThisRow);
+            }
+        });
+        var divs = document.getElementsByClassName('divToReplace');
+
+        var max = myTableArray[0][0];
+        for (var i = 0; i < myTableArray.length; ++i) {
+            if (myTableArray[i][0] > max) {
+                max = myTableArray[i][0];
+            }
+        }
+        for (var i = 0; i < divs.length; ++i) {
+            for (var j = 0; j < max; ++j) {
+                var text = divs[i].innerHTML;
+                if (text === myTableArray[j][0].toString()) {
+                    divs[i].innerHTML = myTableArray[j][1].toString();
+                    j = max;
+                }
+            }
+        }
+    }
+    );
+</script>

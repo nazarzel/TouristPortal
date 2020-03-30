@@ -1,0 +1,54 @@
+﻿@model ShoppingCartViewModel
+    <div class="thumbnail">
+        <h2>Twój koszyk</h2>
+        <h4>Masz ładne wycieczki w swoim koszu</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width:10%">Wybrana ilość</th>
+                    <th class="text-center" style="width:25%">Produkt</th>
+                    <th class="text-center" style="width:15%">Cena</th>
+                    <th class="text-center" style="width:15%">Kwota</th>
+                    <th class="text-center" style="width:35%">Działania</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.ShoppingCart.ShoppingCartItems)
+                {
+                    <tr>
+                        <td class="text-center">@line.Amount</td>
+                        <td class="text-center"><a asp-controller="Product" asp-action="Details" asp-route-id="@line.Product.ProductId">@line.Product.Name</a></td>
+                        <td class="text-center">@line.Product.Price.ToString() zł</td>
+                        <td class="text-center">
+                            @((line.Amount * line.Product.Price).ToString()) zł
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-primary" asp-action="AddToShoppingCart" asp-route-ProductId="@line.Product.ProductId">Zwiększ o 1</a>
+
+
+                            @if (line.Amount == 1)
+                            {
+                                <a class="btn btn-sm btn-danger" asp-action="RemoveFromShoppingCart" asp-route-ProductId="@line.Product.ProductId">Usuń</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-danger" asp-action="RemoveFromShoppingCart" asp-route-ProductId="@line.Product.ProductId">Zmniejsz o 1</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-right">Suma:</td>
+                    <td class="text-right">
+                        @Model.ShoppingCartTotal.ToString() zł
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="text-center">
+            <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Złoż zamówienie</a>
+        </div>
+    </div>

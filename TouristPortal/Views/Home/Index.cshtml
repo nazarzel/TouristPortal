@@ -1,0 +1,18 @@
+﻿@model HomeViewModel
+    <div id="map"></div>
+<partial name="_Carousel" />
+<div class="thumbnail">
+    <div>
+
+        <h2>Oferty miesiąca</h2>
+        <h4>Liczba miejsc ograniczona</h4>
+    </div>
+    <div>
+        <div class="row">
+            @foreach (var product in Model.ProductsOfMonth)
+            {
+                <partial name="_ProductCard" model="product"/>
+            }
+        </div>
+    </div>
+</div>

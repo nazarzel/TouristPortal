@@ -1,15 +1,24 @@
 ﻿@model Product
-
-<h2>@Model.Name</h2>
-
-<div class="thumbnail">
-    <img alt="@Model.Name" src="@Model.ImageUrl">
-    <div class="caption-full">
-        <h3 class="pull-right">@Model.Price</h3>
-        <h3>
-            <a href="#">@Model.Name</a>
-        </h3>
-        <h4>@Model.ShortDescription</h4>
-        <p>@Model.LongDescription</p>
+    <link href="~/Content/MapProduct.css" rel="stylesheet" />
+    <div class="thumbnail">
+        <img alt="@Model.Name" src="@Model.ImageUrl">
+        <div class="caption-full">
+            <h3 class="pull-right">@Model.Price zł</h3>
+            <h3>
+                <a href="#">@Model.Name</a>
+            </h3>
+            <h4>@Model.ShortDescription</h4>
+            <p>@Model.LongDescription</p>
+            <div class="addToCart">
+                <p class="button">
+                    <a class="btn btn-primary"
+                       asp-controller="ShoppingCart"
+                       asp-action="AddToShoppingCart"
+                       asp-route-productId="@Model.ProductId">Dodaj do koszyka</a>
+                </p>
+            </div>
+            <div class="mapouter">
+                <div class="gmap_canvas"><iframe width="100%" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@(Model.MapX+"%2C%20"+Model.MapY)&hl=pl&t=&z=3&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div>
+            </div>
+        </div>
     </div>
-</div>

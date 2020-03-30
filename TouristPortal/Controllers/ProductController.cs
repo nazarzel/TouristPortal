@@ -19,14 +19,29 @@ namespace TouristPortal.Controllers
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
-        public ViewResult List()
+        public ViewResult List(string category)
         {
-            ProductsListViewModel productsListViewModel = new ProductsListViewModel();
-            productsListViewModel.Products = _productRepository.AllProducts;
-            productsListViewModel.CurrentCategory = "Morze";
-            return View(productsListViewModel);
-        }
+            IEnumerable<Product> products;
+            string currentCategory;
 
+            if (string.IsNullOrEmpty(category))
+            {
+                products = _productRepository.AllProducts.OrderBy(p => p.ProductId);
+                currentCategory = "Wszystkie oferty";
+            }
+            else
+            {
+                products = _productRepository.AllProducts.Where(p => p.Category.CategoryName == category)
+                    .OrderBy(p => p.ProductId);
+                currentCategory = _categoryRepository.AllCategories.FirstOrDefault(c => c.CategoryName == category)?.CategoryName;
+            }
+
+            return View(new ProductsListViewModel
+            {
+                Products = products,
+                CurrentCategory = currentCategory
+            });
+        }
         public IActionResult Details(int id)
         {
             var product = _productRepository.GetProductById(id);
